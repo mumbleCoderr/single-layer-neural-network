@@ -6,32 +6,64 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Database {
-    Map<Character, Integer> english;
-    Map<Character, Integer> french;
-    Map<Character, Integer> german;
-    Map<Character, Integer> polish;
-    Map<Character, Integer> spanish;
+    int[][] lettersInFiles;
 
     public Database() {
-        this.english = new HashMap<>();
-        this.french = new HashMap<>();
-        this.german = new HashMap<>();
-        this.polish = new HashMap<>();
-        this.spanish = new HashMap<>();
+        this.lettersInFiles = new int[10][27];
+    }
+    public void countLetters(String language){
+        File dict = new File("data/" + language.toUpperCase());
+        File[] texts = null;
+        if(dict.exists() && dict.isDirectory())
+            texts = dict.listFiles();
 
-        char letter = 'a';
-        for (int i = 0; i < 25; i++) {
-            english.put(letter, 0);
-            french.put(letter, 0);
-            german.put(letter, 0);
-            polish.put(letter, 0);
-            spanish.put(letter, 0);
-            letter++;
+        for (int i = 0; i < texts.length; i++) {
+            lettersInFiles[i] = readFile(texts[i].toString());
         }
     }
 
+    private int[] readFile(String filename){
+        Map<Character, Integer> letters = new HashMap<>();
+        char letter = 'a';
+        for (int i = 0; i < 26; i++) {
+            letters.put(letter++, 0);
+        }
 
-    public void loadData() {
+        try(BufferedReader br = new BufferedReader(new FileReader(filename))){
+            String line = "";
+            while ((line = br.readLine()) != null){
+                String[] split = line.split("\\s++");
+                for (String s : split){
+                    for (int i = 0; i < s.length(); i++) {
+                        char tmp = Character.toLowerCase(s.charAt(i));
+                        if (letters.containsKey(tmp)) {
+                            int counter = letters.get(tmp);
+                            letters.put(tmp, counter + 1);
+                        }
+                    }
+                }
+            }
+        }catch (IOException e){
+            System.err.println("no such a language in our dictionary");
+        }
+
+        int [] lettersCount = convert(letters);
+
+        return lettersCount;
+    }
+    private int[] convert(Map<Character, Integer> map){
+        int[] arr = new int[27];
+        for (Map.Entry<Character, Integer> entry : map.entrySet()){
+            char key = entry.getKey();
+            int count = entry.getValue();
+            arr[key - 'a'] = count;
+        }
+        arr[26] = -1;
+        return arr;
+    }
+
+
+    /*public void loadData() {
         File dictionary = new File("data");
         File[] dicts = null;
         if (dictionary.exists() && dictionary.isDirectory()) {
@@ -93,5 +125,5 @@ public class Database {
         }catch (IOException e){
             System.err.println("no such a language in our dictionary");
         }
-    }
+    }*/
 }
