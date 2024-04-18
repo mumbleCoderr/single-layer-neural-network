@@ -31,26 +31,6 @@ public class Perceptron {
             train(german, "german");
             train(polish, "polish");
             train(spanish, "spanish");
-            /*for (int[] inputVector : english){
-                int realOutput = 0;
-                int calculatedOutput = 0;
-                double dotProduct = dotProduct(inputVector);
-                if (dotProduct >= 0) calculatedOutput = english;
-                double[] newWeigths = deltaRule(inputVector, realOutput, calculatedOutput);
-                System.out.print("input vector: ");
-                printVector(inputVector);
-                System.out.print("weights: ");
-                printVector(weights);
-                System.out.println("dot product: " + dotProduct);
-                System.out.println("d = " + realOutput + " y = " + calculatedOutput);
-                System.out.print("W': ");
-                printVector(newWeigths);
-                boolean isEqual = compareVectors(weights, newWeigths);
-                if (!isEqual){
-                    weights = newWeigths;
-                    weightsImproved = true;
-                }
-            }*/
         }while (weightsImproved);
         System.out.println("====================================================================================" +
                 "===============================================================================================" +
