@@ -19,6 +19,9 @@ public class Main {
 
         List<Perceptron> perceptrons = Arrays.asList(englishPerceptron, frenchPerceptron, germanPerceptron, polishPerceptron, spanishPerceptron);
         Tester tester = new Tester(perceptrons, db);
-        tester.compute("test");
+        tester.computeTestingData("test");
+
+
+        Window window = new Window(tester);
     }
 }

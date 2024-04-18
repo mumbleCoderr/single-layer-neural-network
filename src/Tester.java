@@ -14,7 +14,15 @@ public class Tester {
         this.positiveAttemps = 0;
     }
 
-    public void compute(String filename){
+
+    public void computeTestingData(String filename) {
+        System.out.println("====================================================================================" +
+                "===============================================================================================" +
+                "===============");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCOMPUTING TESTING DATA");
+        System.out.println("====================================================================================" +
+                "===============================================================================================" +
+                "===============");
         File dict = new File(filename);
         File[] languages = null;
         if (dict.exists() && dict.isDirectory())
@@ -25,7 +33,6 @@ public class Tester {
             int[] inputVector = db.readFile(file.toString());
             Perceptron decision = null;
             for (Perceptron perceptron : perceptrons) {
-                double[] weights = perceptron.getWeights();
                 double dotProduct = perceptron.dotProduct(inputVector);
                 if (dotProduct >= 0) decision = perceptron;
             }
@@ -33,10 +40,10 @@ public class Tester {
             System.out.println("DECISION : " + decision.getLanguage().toUpperCase());
             System.out.println("REAL LANGUAGE: " + realLanguage.toUpperCase());
 
-            if(decision.getLanguage().toUpperCase().equals(realLanguage.toUpperCase())){
+            if (decision.getLanguage().toUpperCase().equals(realLanguage.toUpperCase())) {
                 positiveAttemps++;
                 totalAttemps++;
-            }else {
+            } else {
                 totalAttemps++;
             }
         }
@@ -44,8 +51,19 @@ public class Tester {
         System.out.println("\naccuracy: " + evaluation() + "%");
     }
 
-    private double evaluation(){
-        double accuracy = (positiveAttemps/totalAttemps) * 100;
+    public void computeUserData(String filename) {
+        int[] inputVector = db.readFile(filename);
+        Perceptron decision = null;
+        for (Perceptron perceptron : perceptrons) {
+            double dotProduct = perceptron.dotProduct(inputVector);
+            if (dotProduct >= 0) decision = perceptron;
+        }
+
+        System.out.println("DECISION : " + decision.getLanguage().toUpperCase());
+    }
+
+    private double evaluation() {
+        double accuracy = (positiveAttemps / totalAttemps) * 100;
         return accuracy;
     }
 }
